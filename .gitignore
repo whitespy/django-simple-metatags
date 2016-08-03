@@ -1,0 +1,5 @@
+*.py[cow]
+.idea
+dist/
+build/
+/django_simple_metatags.egg-info

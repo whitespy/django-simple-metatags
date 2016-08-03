@@ -1,0 +1,4 @@
+.meta_tags input[type='text'],
+#metatag_form input[type='text'] {
+    width: 610px !important;
+}
