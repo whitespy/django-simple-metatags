@@ -9,7 +9,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 @python_2_unicode_compatible
 class MetaTag(models.Model):
     url = models.CharField(_('URL-path'), max_length=100, blank=True)
-    content_type = models.ForeignKey(ContentType, null=True)
+    content_type = models.ForeignKey(ContentType, null=True, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey()
     title = models.CharField(_('title'), max_length=80, blank=True)
