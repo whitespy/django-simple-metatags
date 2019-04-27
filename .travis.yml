@@ -25,7 +25,9 @@ matrix:
     - {env: DJANGO_VERSION=2.2, python: 3.4}
 
 install:
+  - pip install flake8
   - pip install Django==$DJANGO_VERSION
 
 script:
+  - flake8 ./metatags
   - python runtests.py

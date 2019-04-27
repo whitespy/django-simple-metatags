@@ -1,11 +1,11 @@
 from django import forms
-from django.utils import six
-from django.contrib import admin
 from django.conf import settings
+from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
+from django.utils import six
 
-from .models import MetaTag
 from .forms import InlineMetaTagForm, MetaTagForm
+from .models import MetaTag
 
 
 class MetaTagInlineMeta(forms.MediaDefiningClass):
@@ -39,8 +39,10 @@ class MetaTagInline(six.with_metaclass(MetaTagInlineMeta, GenericStackedInline))
 class MetaTagAdmin(six.with_metaclass(MetaTagAdminMeta, admin.ModelAdmin)):
     form = MetaTagForm
     list_display = ('url',)
-    search_fields = ['url', 'title', 'keywords', 'description']
+    search_fields = ('url', 'title', 'keywords', 'description')
 
     def get_queryset(self, request):
         return super(MetaTagAdmin, self).get_queryset(request).filter(
-            content_type__isnull=True, object_id__isnull=True)
+            content_type__isnull=True,
+            object_id__isnull=True,
+        )

@@ -4,7 +4,6 @@ from django.utils.encoding import force_text
 from metatags.models import MetaTag
 from metatags.utils import truncate_language_code
 
-
 register = Library()
 
 
@@ -28,7 +27,7 @@ def include_meta_tags(context, model_instance=None, model_title_field='title',
             meta_tags = {
                 'title': _get_model_instance_title(model_instance, model_title_field),
                 'keywords': default_keywords,
-                'description': default_description
+                'description': default_description,
             }
     else:
         # Getting meta tags for an URL-path.
@@ -42,6 +41,6 @@ def include_meta_tags(context, model_instance=None, model_title_field='title',
             meta_tags = {
                 'title': default_title,
                 'keywords': default_keywords,
-                'description': default_description
+                'description': default_description,
             }
     return {'meta_tags': meta_tags}
