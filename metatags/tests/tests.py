@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
@@ -5,16 +7,13 @@ from metatags.models import MetaTag
 from metatags.templatetags.meta_tags import include_meta_tags
 from metatags.utils import truncate_language_code
 
-
-class DjangoDummyHttpRequest(object):
-
-    def __init__(self, path_info):
-        self.path_info = path_info
+HttpRequestDummy = namedtuple('HttpRequestDummy', ['path_info'])
 
 
 class TestMetaTags(TestCase):
 
     def test_truncate_language_code(self):
+        self.assertEqual(truncate_language_code('/'), '/')
         self.assertEqual(truncate_language_code('/en/'), '/')
         self.assertEqual(truncate_language_code('/end/'), '/end/')
         self.assertEqual(truncate_language_code('/en/services/'), '/services/')
@@ -34,7 +33,7 @@ class TestMetaTags(TestCase):
         self.assertEqual(meta_tag_model_instance.description, meta_tag_template_context_dict['meta_tags'].description)
 
     def test_get_meta_tags_by_url_path(self):
-        request = DjangoDummyHttpRequest('/foo/bar/')
+        request = HttpRequestDummy('/foo/bar/')
         meta_tag_model_instance = MetaTag.objects.create(
             url=request.path_info,
             title='test title',
