@@ -3,12 +3,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-simple-metatags',
-    version='0.9.1',
-    description='''The django application, that allows attach title, keywords 
-    and description meta tags for site's pages.
-    ''',
+    version='0.9.2',
+    description="The django application, that allows attach title, keywords "
+                "and description meta tags for site's pages.",
     author='Andrey Butenko',
-    author_email='whitespysoftware@yandex.ru',
+    author_email='whitespysoftware@gmail.com',
     url='https://github.com/whitespy/django-simple-metatags',
     long_description=open('README.rst').read(),
     packages=find_packages(),
