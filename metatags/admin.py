@@ -2,7 +2,6 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
-from django.utils import six
 
 from .forms import InlineMetaTagForm, MetaTagForm
 from .models import MetaTag
@@ -26,7 +25,7 @@ class MetaTagAdminMeta(forms.MediaDefiningClass):
         return super(MetaTagAdminMeta, mcs).__new__(mcs, name, bases, attrs)
 
 
-class MetaTagInline(six.with_metaclass(MetaTagInlineMeta, GenericStackedInline)):
+class MetaTagInline(GenericStackedInline, metaclass=MetaTagInlineMeta):
     model = MetaTag
     extra = 1
     max_num = 1
@@ -36,7 +35,7 @@ class MetaTagInline(six.with_metaclass(MetaTagInlineMeta, GenericStackedInline))
 
 
 @admin.register(MetaTag)
-class MetaTagAdmin(six.with_metaclass(MetaTagAdminMeta, admin.ModelAdmin)):
+class MetaTagAdmin(admin.ModelAdmin, metaclass=MetaTagAdminMeta):
     form = MetaTagForm
     list_display = ('url',)
     search_fields = ('url', 'title', 'keywords', 'description')

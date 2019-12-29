@@ -1,5 +1,5 @@
 from django.template import Library
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from metatags.models import MetaTag
 from metatags.utils import truncate_language_code
@@ -8,7 +8,7 @@ register = Library()
 
 
 def _get_model_instance_title(model_instance, model_title_field):
-    return getattr(model_instance, model_title_field, force_text(model_instance))
+    return getattr(model_instance, model_title_field, force_str(model_instance))
 
 
 @register.inclusion_tag('metatags/_meta_tags.html', takes_context=True)

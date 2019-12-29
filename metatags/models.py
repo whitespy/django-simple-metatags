@@ -1,11 +1,10 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible, force_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import force_str
+from django.utils.translation import gettext_lazy as _
 
 
-@python_2_unicode_compatible
 class MetaTag(models.Model):
     url = models.CharField(_('URL-path'), max_length=100, blank=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
@@ -24,5 +23,5 @@ class MetaTag(models.Model):
 
     def __str__(self):
         if self.content_object:
-            return force_text(self.content_object)
+            return force_str(self.content_object)
         return self.title
