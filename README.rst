@@ -1,11 +1,16 @@
 django-simple-metatags
 ======================
 
+.. image:: https://secure.travis-ci.org/whitespy/django-simple-metatags.svg
+    :target: http://travis-ci.org/whitespy/django-simple-metatags
+
+.. image:: https://badge.fury.io/py/django-simple-metatags.svg
+    :target: https://badge.fury.io/py/django-simple-metatags
+
+|
+
 The django application, that allows attach title, keywords and description meta tags for
 site's pages.
-
-.. image:: https://secure.travis-ci.org/whitespy/django-simple-metatags.png
-    :target: http://travis-ci.org/whitespy/django-simple-metatags
 
 Installation
 ------------
