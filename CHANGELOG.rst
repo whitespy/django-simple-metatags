@@ -2,6 +2,11 @@
 Changelog
 #########
 
+Release 1.0.1
+-------------
+
+- Added __init__.py files to management and management/commands directories to build distributive properly (issue https://github.com/pypa/setuptools/issues/97)
+
 Release 1.0.0
 -------------
 
