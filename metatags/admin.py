@@ -13,7 +13,7 @@ class MetaTagInlineMeta(forms.MediaDefiningClass):
         if 'modeltranslation' in settings.INSTALLED_APPS:
             from modeltranslation.admin import TranslationGenericStackedInline
             bases = (TranslationGenericStackedInline,)
-        return super(MetaTagInlineMeta, mcs).__new__(mcs, name, bases, attrs)
+        return super().__new__(mcs, name, bases, attrs)
 
 
 class MetaTagAdminMeta(forms.MediaDefiningClass):
@@ -22,7 +22,7 @@ class MetaTagAdminMeta(forms.MediaDefiningClass):
         if 'modeltranslation' in settings.INSTALLED_APPS:
             from modeltranslation.admin import TranslationAdmin
             bases = (TranslationAdmin,)
-        return super(MetaTagAdminMeta, mcs).__new__(mcs, name, bases, attrs)
+        return super().__new__(mcs, name, bases, attrs)
 
 
 class MetaTagInline(GenericStackedInline, metaclass=MetaTagInlineMeta):
@@ -41,7 +41,4 @@ class MetaTagAdmin(admin.ModelAdmin, metaclass=MetaTagAdminMeta):
     search_fields = ('url', 'title', 'keywords', 'description')
 
     def get_queryset(self, request):
-        return super(MetaTagAdmin, self).get_queryset(request).filter(
-            content_type__isnull=True,
-            object_id__isnull=True,
-        )
+        return super().get_queryset(request).filter(content_type__isnull=True, object_id__isnull=True)
