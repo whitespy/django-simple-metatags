@@ -7,6 +7,7 @@ from ..models import MetaTag
 from ..templatetags.meta_tags import include_meta_tags
 from ..utils import truncate_language_code_from_path
 
+UserModel = get_user_model()
 HttpRequestDummy = namedtuple('HttpRequestDummy', ['path_info'])
 
 
@@ -19,7 +20,6 @@ class TestMetaTags(TestCase):
         self.assertEqual(truncate_language_code_from_path('/en/services/'), '/services/')
 
     def test_get_meta_tags_for_object(self):
-        UserModel = get_user_model()
         test_user = UserModel.objects.create(username='test_user')
         meta_tag_model_instance = MetaTag.objects.create(
             title='test user title',
@@ -44,3 +44,15 @@ class TestMetaTags(TestCase):
         self.assertEqual(meta_tag_model_instance.title, meta_tag_template_context_dict['meta_tags'].title)
         self.assertEqual(meta_tag_model_instance.keywords, meta_tag_template_context_dict['meta_tags'].keywords)
         self.assertEqual(meta_tag_model_instance.description, meta_tag_template_context_dict['meta_tags'].description)
+
+    def test_delete_attached_meta_tags(self):
+        test_user = UserModel.objects.create(username='test_user')
+        MetaTag.objects.create(
+            title='test user title',
+            keywords='test user keywords',
+            description='test user description',
+            content_object=test_user,
+        )
+        self.assertTrue(MetaTag.objects.exists())
+        test_user.delete()
+        self.assertFalse(MetaTag.objects.exists())
