@@ -1,8 +1,8 @@
 from django.template import Library
 from django.utils.encoding import force_str
 
-from metatags.models import MetaTag
-from metatags.utils import truncate_language_code
+from ..models import MetaTag
+from ..utils import truncate_language_code
 
 register = Library()
 
@@ -17,9 +17,11 @@ def include_meta_tags(context, model_instance=None, model_title_field='title',
     if model_instance is not None:
         # Getting meta tags for a given model instance.
         try:
-            meta_tags = MetaTag.objects.get(object_id=model_instance.pk,
-                                            content_type__app_label=model_instance._meta.app_label,
-                                            content_type__model=model_instance._meta.model_name)
+            meta_tags = MetaTag.objects.get(
+                content_type__app_label=model_instance._meta.app_label,
+                content_type__model=model_instance._meta.model_name,
+                object_id=model_instance.pk,
+            )
             meta_tags.title = meta_tags.title or _get_model_instance_title(model_instance, model_title_field)
             meta_tags.keywords = meta_tags.keywords or default_keywords
             meta_tags.description = meta_tags.description or default_description
