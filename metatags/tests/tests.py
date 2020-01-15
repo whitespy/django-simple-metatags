@@ -19,33 +19,33 @@ class TestMetaTags(TestCase):
         self.assertEqual(truncate_language_code_from_path('/end/'), '/end/')
         self.assertEqual(truncate_language_code_from_path('/en/services/'), '/services/')
 
-    def test_get_meta_tags_for_object(self):
+    def test_retrieve_attached_meta_tags(self):
         test_user = UserModel.objects.create(username='test_user')
-        meta_tag_model_instance = MetaTag.objects.create(
+        meta_tags = MetaTag.objects.create(
             title='test user title',
             keywords='test user keywords',
             description='test user description',
             content_object=test_user,
         )
-        meta_tag_template_context_dict = include_meta_tags({}, test_user)
-        self.assertEqual(meta_tag_model_instance.title, meta_tag_template_context_dict['meta_tags'].title)
-        self.assertEqual(meta_tag_model_instance.keywords, meta_tag_template_context_dict['meta_tags'].keywords)
-        self.assertEqual(meta_tag_model_instance.description, meta_tag_template_context_dict['meta_tags'].description)
+        meta_tags_template_context = include_meta_tags({}, test_user)['meta_tags']
+        self.assertEqual(meta_tags.title, meta_tags_template_context['title'])
+        self.assertEqual(meta_tags.keywords, meta_tags_template_context['keywords'])
+        self.assertEqual(meta_tags.description, meta_tags_template_context['description'])
 
-    def test_get_meta_tags_by_url_path(self):
+    def test_retrieve_meta_tags_by_url_path(self):
         request = HttpRequestDummy('/foo/bar/')
-        meta_tag_model_instance = MetaTag.objects.create(
-            url=request.path_info,
+        meta_tags = MetaTag.objects.create(
+            url='/foo/bar/',
             title='test title',
             keywords='test keywords',
             description='test description',
         )
-        meta_tag_template_context_dict = include_meta_tags({'request': request})
-        self.assertEqual(meta_tag_model_instance.title, meta_tag_template_context_dict['meta_tags'].title)
-        self.assertEqual(meta_tag_model_instance.keywords, meta_tag_template_context_dict['meta_tags'].keywords)
-        self.assertEqual(meta_tag_model_instance.description, meta_tag_template_context_dict['meta_tags'].description)
+        meta_tags_template_context = include_meta_tags({'request': request})['meta_tags']
+        self.assertEqual(meta_tags.title, meta_tags_template_context['title'])
+        self.assertEqual(meta_tags.keywords, meta_tags_template_context['keywords'])
+        self.assertEqual(meta_tags.description, meta_tags_template_context['description'])
 
-    def test_delete_attached_meta_tags(self):
+    def test_cascade_deletion_attached_meta_tags(self):
         test_user = UserModel.objects.create(username='test_user')
         MetaTag.objects.create(
             title='test user title',
