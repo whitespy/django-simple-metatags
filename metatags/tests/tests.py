@@ -5,18 +5,18 @@ from django.test import TestCase
 
 from ..models import MetaTag
 from ..templatetags.meta_tags import include_meta_tags
-from ..utils import truncate_language_code
+from ..utils import truncate_language_code_from_path
 
 HttpRequestDummy = namedtuple('HttpRequestDummy', ['path_info'])
 
 
 class TestMetaTags(TestCase):
 
-    def test_truncate_language_code(self):
-        self.assertEqual(truncate_language_code('/'), '/')
-        self.assertEqual(truncate_language_code('/en/'), '/')
-        self.assertEqual(truncate_language_code('/end/'), '/end/')
-        self.assertEqual(truncate_language_code('/en/services/'), '/services/')
+    def test_truncate_language_code_from_path(self):
+        self.assertEqual(truncate_language_code_from_path('/'), '/')
+        self.assertEqual(truncate_language_code_from_path('/en/'), '/')
+        self.assertEqual(truncate_language_code_from_path('/end/'), '/end/')
+        self.assertEqual(truncate_language_code_from_path('/en/services/'), '/services/')
 
     def test_get_meta_tags_for_object(self):
         UserModel = get_user_model()

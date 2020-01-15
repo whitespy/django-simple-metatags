@@ -1,7 +1,7 @@
 from django.utils.translation import get_language_from_path
 
 
-def truncate_language_code(path):
+def truncate_language_code_from_path(path):
     """
     Truncates language code from URL-path.
     """
