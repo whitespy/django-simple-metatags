@@ -44,13 +44,16 @@ class MetaTagForm(InlineMetaTagForm):
         url = self.cleaned_data['url']
 
         if not url.startswith('/'):
-            raise forms.ValidationError(gettext('URL is missing a leading slash.'))
+            raise forms.ValidationError(gettext('URL is missing a leading slash.'), code='missing_leading_slash')
 
         if (not url.endswith('/') and settings.APPEND_SLASH and
                 'django.middleware.common.CommonMiddleware' in settings.MIDDLEWARE):
-            raise forms.ValidationError(gettext('URL is missing a trailing slash.'))
+            raise forms.ValidationError(gettext('URL is missing a trailing slash.'), code='missing_trailing_slash')
 
-        if MetaTag.objects.filter(url=url).exists() and (self.instance is None or url != self.instance.url):
-            raise forms.ValidationError(gettext('Meta tags for a given URL-path have already been identified.'))
+        if MetaTag.objects.filter(url=url).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError(
+                gettext('Meta tags for a given URL-path have already been identified.'),
+                code='duplicate_url',
+            )
 
         return url
