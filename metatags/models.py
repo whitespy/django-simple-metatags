@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class MetaTag(models.Model):
-    url = models.CharField(_('URL-path'), max_length=100, blank=True)
+    url = models.CharField(_('URL-path'), max_length=100, blank=True, db_index=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
     object_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey()
