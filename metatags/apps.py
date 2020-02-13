@@ -7,4 +7,4 @@ class MetaTagsConfig(AppConfig):
     verbose_name = _('Meta tags')
 
     def ready(self):
-        from . import receivers  # noqa
+        from . import receivers  # NOQA

@@ -3,9 +3,9 @@ from collections import namedtuple
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ..models import MetaTag
-from ..templatetags.meta_tags import include_meta_tags
-from ..utils import truncate_language_code_from_path
+from .models import MetaTag
+from .templatetags.meta_tags import include_meta_tags
+from .utils import truncate_language_code_from_path
 
 UserModel = get_user_model()
 HttpRequestDummy = namedtuple('HttpRequestDummy', ['path_info'])

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import os
 import sys
 
 import django
@@ -7,7 +6,20 @@ from django.conf import settings
 from django.test.utils import get_runner
 
 if __name__ == '__main__':
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'metatags.tests.settings'
+    test_settings = {
+        'SECRET_KEY': 'test_key',
+        'DATABASES': {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+            },
+        },
+        'INSTALLED_APPS': [
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'metatags',
+        ],
+    }
+    settings.configure(**test_settings)
     django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner()
