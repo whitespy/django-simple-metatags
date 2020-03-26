@@ -13,6 +13,11 @@ if __name__ == '__main__':
                 'ENGINE': 'django.db.backends.sqlite3',
             },
         },
+        'CACHES': {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            },
+        },
         'INSTALLED_APPS': [
             'django.contrib.auth',
             'django.contrib.contenttypes',

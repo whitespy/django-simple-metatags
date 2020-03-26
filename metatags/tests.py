@@ -1,17 +1,17 @@
 from collections import namedtuple
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import SimpleTestCase, TestCase, override_settings
 
 from .models import MetaTag
 from .templatetags.meta_tags import include_meta_tags
-from .utils import truncate_language_code_from_path
+from .utils import truncate_language_code_from_path, check_caching_enabled, get_cache_backend
 
 UserModel = get_user_model()
 HttpRequestDummy = namedtuple('HttpRequestDummy', ['path_info'])
 
 
-class TestMetaTags(TestCase):
+class TestUtils(SimpleTestCase):
 
     def test_truncate_language_code_from_path(self):
         self.assertEqual(truncate_language_code_from_path('/'), '/')
@@ -19,40 +19,101 @@ class TestMetaTags(TestCase):
         self.assertEqual(truncate_language_code_from_path('/end/'), '/end/')
         self.assertEqual(truncate_language_code_from_path('/en/services/'), '/services/')
 
-    def test_retrieve_attached_meta_tags(self):
-        test_user = UserModel.objects.create(username='test_user')
-        meta_tags = MetaTag.objects.create(
+    def test_check_caching_enabled_when_caching_disabled(self):
+        self.assertFalse(check_caching_enabled())
+
+    @override_settings(METATAGS_CACHE_ENABLED=True)
+    def test_check_caching_enabled_when_caching_enabled(self):
+        self.assertTrue(check_caching_enabled())
+
+
+class TestTemplateTags(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.model_instance = UserModel.objects.create(username='test_user')
+        cls.attached_to_model_instance_meta_tags = MetaTag.objects.create(
             title='test user title',
             keywords='test user keywords',
             description='test user description',
-            content_object=test_user,
+            content_object=cls.model_instance,
         )
-        meta_tags_template_context = include_meta_tags({}, test_user)['meta_tags']
-        self.assertEqual(meta_tags.title, meta_tags_template_context['title'])
-        self.assertEqual(meta_tags.keywords, meta_tags_template_context['keywords'])
-        self.assertEqual(meta_tags.description, meta_tags_template_context['description'])
-
-    def test_retrieve_meta_tags_by_url_path(self):
-        request = HttpRequestDummy('/foo/bar/')
-        meta_tags = MetaTag.objects.create(
+        cls.attached_to_url_path_meta_tags = MetaTag.objects.create(
             url='/foo/bar/',
             title='test title',
             keywords='test keywords',
             description='test description',
         )
-        meta_tags_template_context = include_meta_tags({'request': request})['meta_tags']
-        self.assertEqual(meta_tags.title, meta_tags_template_context['title'])
-        self.assertEqual(meta_tags.keywords, meta_tags_template_context['keywords'])
-        self.assertEqual(meta_tags.description, meta_tags_template_context['description'])
 
-    def test_cascade_deletion_attached_meta_tags(self):
-        test_user = UserModel.objects.create(username='test_user')
-        MetaTag.objects.create(
+    def test_retrieve_attached_to_model_instance_meta_tags(self):
+        meta_tags_template_context = include_meta_tags({}, self.model_instance)['meta_tags']
+        self.assertEqual(self.attached_to_model_instance_meta_tags.title, meta_tags_template_context['title'])
+        self.assertEqual(self.attached_to_model_instance_meta_tags.keywords, meta_tags_template_context['keywords'])
+        self.assertEqual(
+            self.attached_to_model_instance_meta_tags.description,
+            meta_tags_template_context['description'],
+        )
+
+    def test_retrieve_attached_to_url_path_meta_tags(self):
+        request = HttpRequestDummy('/foo/bar/')
+        meta_tags_template_context = include_meta_tags({'request': request})['meta_tags']
+        self.assertEqual(self.attached_to_url_path_meta_tags.title, meta_tags_template_context['title'])
+        self.assertEqual(self.attached_to_url_path_meta_tags.keywords, meta_tags_template_context['keywords'])
+        self.assertEqual(self.attached_to_url_path_meta_tags.description, meta_tags_template_context['description'])
+
+    @override_settings(METATAGS_CACHE_ENABLED=True)
+    def test_retrieve_attached_to_model_instance_cached_meta_tags(self):
+        self.attached_to_model_instance_meta_tags._rebuild_cache()
+        with self.assertNumQueries(0):
+            meta_tags_template_context = include_meta_tags({}, self.model_instance)['meta_tags']
+        self.assertEqual(self.attached_to_model_instance_meta_tags.title, meta_tags_template_context['title'])
+        self.assertEqual(self.attached_to_model_instance_meta_tags.keywords, meta_tags_template_context['keywords'])
+        self.assertEqual(
+            self.attached_to_model_instance_meta_tags.description,
+            meta_tags_template_context['description'],
+        )
+        self.attached_to_model_instance_meta_tags._invalidate_cache()
+
+    @override_settings(METATAGS_CACHE_ENABLED=True)
+    def test_retrieve_attached_to_url_path_cached_meta_tags(self):
+        request = HttpRequestDummy('/foo/bar/')
+        self.attached_to_url_path_meta_tags._rebuild_cache()
+        with self.assertNumQueries(0):
+            meta_tags_template_context = include_meta_tags({'request': request})['meta_tags']
+        self.assertEqual(self.attached_to_url_path_meta_tags.title, meta_tags_template_context['title'])
+        self.assertEqual(self.attached_to_url_path_meta_tags.keywords, meta_tags_template_context['keywords'])
+        self.assertEqual(self.attached_to_url_path_meta_tags.description, meta_tags_template_context['description'])
+
+
+class TestModels(TestCase):
+
+    def setUp(self):
+        self.model_instance = UserModel.objects.create(username='test_user')
+        self.meta_tags = MetaTag.objects.create(
             title='test user title',
             keywords='test user keywords',
             description='test user description',
-            content_object=test_user,
+            content_object=self.model_instance,
         )
+
+    def test_cascade_deletion_attached_to_model_instance_meta_tags(self):
         self.assertTrue(MetaTag.objects.exists())
-        test_user.delete()
+        self.model_instance.delete()
         self.assertFalse(MetaTag.objects.exists())
+
+    @override_settings(METATAGS_CACHE_ENABLED=True)
+    def test_cascade_deletion_attached_to_model_instance_cached_meta_tags(self):
+        self.meta_tags._rebuild_cache()
+        cache = get_cache_backend()
+        self.assertIsNotNone(cache.get(self.meta_tags._get_cache_key()))
+        self.model_instance.delete()
+        self.assertFalse(MetaTag.objects.exists())
+        self.assertIsNone(cache.get(self.meta_tags._get_cache_key()))
+
+    @override_settings(METATAGS_CACHE_ENABLED=True)
+    def test_cached_meta_tags_deletion(self):
+        self.meta_tags._rebuild_cache()
+        cache = get_cache_backend()
+        self.assertIsNotNone(cache.get(self.meta_tags._get_cache_key()))
+        self.meta_tags.delete()
+        self.assertIsNone(cache.get(self.meta_tags._get_cache_key()))
