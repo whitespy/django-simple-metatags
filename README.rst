@@ -1,3 +1,4 @@
+======================
 django-simple-metatags
 ======================
 
@@ -79,7 +80,27 @@ All arguments are optional.
 
 **default_description** - Description by default.
 
+Settings
+--------
+
+**METATAGS_CACHE_ENABLED** - Enables meta tags caching to avoid database hitting. Defaults to **False**.
+
+.. note::
+
+    Django's caching system must be configured.
+
+**METATAGS_CACHE_ALIAS** - Name of cache backend used by meta tags caching feature. Defaults to **default**.
+
+**METATAGS_CACHE_TIMEOUT** - Timeout, in seconds, to use for meta tags caching. If value set up to **None**
+cached meta tags never expire. Defaults to **None**.
+
+.. note::
+
+    Value of **0** causes meta tags to immediately expire.
+
 Management command
 ------------------
+
+**resetmetatagscache** - Removes all cached meta tags.
 
 **syncmetatags** - adds translation fields, when the django-modeltranslation application is used.
