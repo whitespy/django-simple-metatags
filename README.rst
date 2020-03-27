@@ -102,5 +102,3 @@ Management command
 ------------------
 
 **resetmetatagscache** - Removes all cached meta tags.
-
-**syncmetatags** - adds translation fields, when the django-modeltranslation application is used.
