@@ -7,7 +7,7 @@ from ..utils import truncate_language_code_from_path, check_caching_enabled
 register = Library()
 
 
-@register.inclusion_tag('metatags/_meta_tags.html', takes_context=True)
+@register.inclusion_tag('metatags/includes/metatags.html', takes_context=True)
 def include_meta_tags(context, model_instance=None, default_title='', default_keywords='', default_description=''):
     is_caching_enabled = check_caching_enabled()
     meta_tags_context = {
