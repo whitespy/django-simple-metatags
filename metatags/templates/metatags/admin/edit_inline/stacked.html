@@ -4,7 +4,7 @@
   {{ inline_admin_formset.formset.management_form }}
   {{ inline_admin_formset.formset.non_form_errors }}
   {% for inline_admin_form in inline_admin_formset %}
-    <div class="meta_tags inline-related{% if forloop.last %} empty-form last-related{% endif %}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
+    <div class="metatags inline-related{% if forloop.last %} empty-form last-related{% endif %}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
       {% if inline_admin_form.form.non_field_errors %}
         {{ inline_admin_form.form.non_field_errors }}
       {% endif %}

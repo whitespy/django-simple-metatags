@@ -12,13 +12,16 @@ class InlineMetaTagForm(forms.ModelForm):
 
     @property
     def media(self):
-        _media = forms.Media(css={'all': ('css/meta_tags.css',)})
+        _media = forms.Media(css={
+            'all': ('metatags/css/metatags.css',),
+        })
         if 'modeltranslation' in settings.INSTALLED_APPS:
             _media.add_css({
                 'all': ('modeltranslation/css/tabbed_translation_fields.css',),
             })
             _media.add_js((
-                'modeltranslation/js/force_jquery.js', 'js/jquery-ui.min.js',
+                'modeltranslation/js/force_jquery.js',
+                'metatags/js/jquery-ui.min.js',
                 'modeltranslation/js/tabbed_translation_fields.js',
             ))
         return _media
