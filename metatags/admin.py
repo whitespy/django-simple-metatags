@@ -3,8 +3,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
 
-from .forms import InlineMetaTagForm, MetaTagForm
+from .forms import MetaTagForm
 from .models import MetaTag
+from .utils import get_media_class
 
 
 class MetaTagInlineMeta(forms.MediaDefiningClass):
@@ -13,6 +14,7 @@ class MetaTagInlineMeta(forms.MediaDefiningClass):
         if 'modeltranslation' in settings.INSTALLED_APPS:
             from modeltranslation.admin import TranslationGenericStackedInline
             bases = (TranslationGenericStackedInline,)
+            attrs['Media'] = get_media_class()
         return super().__new__(mcs, name, bases, attrs)
 
 
@@ -22,6 +24,7 @@ class MetaTagAdminMeta(forms.MediaDefiningClass):
         if 'modeltranslation' in settings.INSTALLED_APPS:
             from modeltranslation.admin import TranslationAdmin
             bases = (TranslationAdmin,)
+            attrs['Media'] = get_media_class()
         return super().__new__(mcs, name, bases, attrs)
 
 
@@ -30,7 +33,7 @@ class MetaTagInline(GenericStackedInline, metaclass=MetaTagInlineMeta):
     extra = 1
     max_num = 1
     can_delete = False
-    form = InlineMetaTagForm
+    fields = ('title', 'keywords', 'description')
     template = 'metatags/admin/edit_inline/stacked.html'
 
 

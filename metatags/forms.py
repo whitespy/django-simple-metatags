@@ -5,29 +5,7 @@ from django.utils.translation import gettext, gettext_lazy as _
 from .models import MetaTag
 
 
-class InlineMetaTagForm(forms.ModelForm):
-
-    class Meta:
-        fields = ('title', 'keywords', 'description')
-
-    @property
-    def media(self):
-        _media = forms.Media(css={
-            'all': ('metatags/css/metatags.css',),
-        })
-        if 'modeltranslation' in settings.INSTALLED_APPS:
-            _media.add_css({
-                'all': ('modeltranslation/css/tabbed_translation_fields.css',),
-            })
-            _media.add_js((
-                'modeltranslation/js/force_jquery.js',
-                'metatags/js/jquery-ui.min.js',
-                'modeltranslation/js/tabbed_translation_fields.js',
-            ))
-        return _media
-
-
-class MetaTagForm(InlineMetaTagForm):
+class MetaTagForm(forms.ModelForm):
     url = forms.RegexField(
         label=_('URL-path'),
         max_length=100,
