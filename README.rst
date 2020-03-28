@@ -13,6 +13,14 @@ django-simple-metatags
 The django application, that allows attach title, keywords and description meta tags for
 site's pages.
 
+Features
+--------
+
+- Attaching meta tags to a model instance
+- Attaching meta tags to an URL-path
+- Caching
+- Integration with the django-modeltranslation application
+
 Installation
 ------------
 
