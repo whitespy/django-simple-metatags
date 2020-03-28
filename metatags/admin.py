@@ -40,7 +40,7 @@ class MetaTagInline(GenericStackedInline, metaclass=MetaTagInlineMeta):
 @admin.register(MetaTag)
 class MetaTagAdmin(admin.ModelAdmin, metaclass=MetaTagAdminMeta):
     form = MetaTagForm
-    list_display = ('url',)
+    list_display = list_display_links = ('url', 'title')
     search_fields = ('url', 'title', 'keywords', 'description')
 
     def get_queryset(self, request):

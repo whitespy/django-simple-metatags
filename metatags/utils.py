@@ -62,4 +62,4 @@ def get_media_class():
             mt_settings.JQUERY_UI_URL,
             'modeltranslation/js/tabbed_translation_fields.js',
         )
-    return type('Media', (), {'css': {'all': css_files} , 'js': js})
+    return type('Media', (), {'css': {'all': css_files}, 'js': js})
