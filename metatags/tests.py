@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.test import SimpleTestCase, TestCase, override_settings
 
 from .models import MetaTag
-from .templatetags.meta_tags import include_meta_tags
+from .templatetags.metatags import include_metatags
 from .utils import truncate_language_code_from_path, check_caching_enabled, get_cache_backend
 
 UserModel = get_user_model()
@@ -46,7 +46,7 @@ class TestTemplateTags(TestCase):
         )
 
     def test_retrieve_attached_to_model_instance_meta_tags(self):
-        meta_tags_template_context = include_meta_tags({}, self.model_instance)['meta_tags']
+        meta_tags_template_context = include_metatags({}, self.model_instance)['meta_tags']
         self.assertEqual(self.attached_to_model_instance_meta_tags.title, meta_tags_template_context['title'])
         self.assertEqual(self.attached_to_model_instance_meta_tags.keywords, meta_tags_template_context['keywords'])
         self.assertEqual(
@@ -56,7 +56,7 @@ class TestTemplateTags(TestCase):
 
     def test_retrieve_attached_to_url_path_meta_tags(self):
         request = HttpRequestDummy('/foo/bar/')
-        meta_tags_template_context = include_meta_tags({'request': request})['meta_tags']
+        meta_tags_template_context = include_metatags({'request': request})['meta_tags']
         self.assertEqual(self.attached_to_url_path_meta_tags.title, meta_tags_template_context['title'])
         self.assertEqual(self.attached_to_url_path_meta_tags.keywords, meta_tags_template_context['keywords'])
         self.assertEqual(self.attached_to_url_path_meta_tags.description, meta_tags_template_context['description'])
@@ -65,7 +65,7 @@ class TestTemplateTags(TestCase):
     def test_retrieve_attached_to_model_instance_cached_meta_tags(self):
         self.attached_to_model_instance_meta_tags._rebuild_cache()
         with self.assertNumQueries(0):
-            meta_tags_template_context = include_meta_tags({}, self.model_instance)['meta_tags']
+            meta_tags_template_context = include_metatags({}, self.model_instance)['meta_tags']
         self.assertEqual(self.attached_to_model_instance_meta_tags.title, meta_tags_template_context['title'])
         self.assertEqual(self.attached_to_model_instance_meta_tags.keywords, meta_tags_template_context['keywords'])
         self.assertEqual(
@@ -79,7 +79,7 @@ class TestTemplateTags(TestCase):
         request = HttpRequestDummy('/foo/bar/')
         self.attached_to_url_path_meta_tags._rebuild_cache()
         with self.assertNumQueries(0):
-            meta_tags_template_context = include_meta_tags({'request': request})['meta_tags']
+            meta_tags_template_context = include_metatags({'request': request})['meta_tags']
         self.assertEqual(self.attached_to_url_path_meta_tags.title, meta_tags_template_context['title'])
         self.assertEqual(self.attached_to_url_path_meta_tags.keywords, meta_tags_template_context['keywords'])
         self.assertEqual(self.attached_to_url_path_meta_tags.description, meta_tags_template_context['description'])
