@@ -4,8 +4,8 @@ from setuptools import setup, find_packages
 setup(
     name='django-simple-metatags',
     version='1.0.1',
-    description="The django application, that allows attach title, keywords "
-                "and description meta tags for site's pages.",
+    description="The django application allows to add title, keywords and "
+                "description meta tags to site's pages.",
     author='Andrey Butenko',
     author_email='whitespysoftware@gmail.com',
     url='https://github.com/whitespy/django-simple-metatags',
