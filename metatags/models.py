@@ -22,7 +22,7 @@ class MetaTag(models.Model):
 
     class Meta:
         ordering = ('id',)
-        db_table = 'meta_tags'
+        db_table = 'metatags'
         unique_together = ('content_type', 'object_id')
         verbose_name = _('meta tags')
         verbose_name_plural = _('meta tags')
