@@ -45,3 +45,15 @@ class MetaTagAdmin(admin.ModelAdmin, metaclass=MetaTagAdminMeta):
 
     def get_queryset(self, request):
         return super().get_queryset(request).attached_to_url_path()
+
+
+class MetaTagAbleMixin:
+
+    def get_inlines(self, request, ob):
+        inlines = super().get_inlines(request, ob)
+        inlines = inlines + (MetaTagInline,)
+        return inlines
+
+
+class MetaTagAbleModelAdmin(MetaTagAbleMixin, admin.ModelAdmin):
+    pass
