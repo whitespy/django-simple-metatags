@@ -34,7 +34,7 @@ class MetaTagManager(models.Manager.from_queryset(MetaTagQueryset)):
     def fetch_from_cache_attached_to_model_instance(self, model_instance):
         """
         Fetches attached to a model instance meta tags from cache if
-        available. Otherwise tries to retrieve meta tags from database
+        available. Otherwise tries to retrieve meta tags from a database
         and rebuilds cache.
         """
         cache = get_cache_backend()
@@ -53,7 +53,7 @@ class MetaTagManager(models.Manager.from_queryset(MetaTagQueryset)):
     def fetch_from_cache_attached_to_url_path(self, url_path):
         """
         Fetches attached to to an URL-path meta tags from cache if
-        available. Otherwise tries to retrieve meta tags from database
+        available. Otherwise tries to retrieve meta tags from a database
         and rebuilds cache.
         """
         cache = get_cache_backend()

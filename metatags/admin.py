@@ -5,26 +5,47 @@ from django.contrib.contenttypes.admin import GenericStackedInline
 
 from .forms import MetaTagForm
 from .models import MetaTag
-from .utils import get_media_class
 
 
-class MetaTagInlineMeta(forms.MediaDefiningClass):
+class BaseMetaTagMeta(forms.MediaDefiningClass):
+
+    @staticmethod
+    def check_modeltranslation_app_installed():
+        return 'modeltranslation' in settings.INSTALLED_APPS
+
+    @classmethod
+    def get_media_class(mcs):
+        css_files = ['metatags/css/metatags.css']
+        js = None
+        if mcs.check_modeltranslation_app_installed():
+            from modeltranslation import settings as mt_settings
+            css_files.append('modeltranslation/css/tabbed_translation_fields.css')
+            js = (
+                'admin/js/jquery.init.js',
+                'modeltranslation/js/force_jquery.js',
+                mt_settings.JQUERY_UI_URL,
+                'modeltranslation/js/tabbed_translation_fields.js',
+            )
+        return type('Media', (), {'css': {'all': css_files}, 'js': js})
+
+
+class MetaTagInlineMeta(BaseMetaTagMeta):
 
     def __new__(mcs, name, bases, attrs):
-        if 'modeltranslation' in settings.INSTALLED_APPS:
+        if mcs.check_modeltranslation_app_installed():
             from modeltranslation.admin import TranslationGenericStackedInline
             bases = (TranslationGenericStackedInline,)
-            attrs['Media'] = get_media_class()
+        attrs['Media'] = mcs.get_media_class()
         return super().__new__(mcs, name, bases, attrs)
 
 
-class MetaTagAdminMeta(forms.MediaDefiningClass):
+class MetaTagAdminMeta(BaseMetaTagMeta):
 
     def __new__(mcs, name, bases, attrs):
-        if 'modeltranslation' in settings.INSTALLED_APPS:
+        if mcs.check_modeltranslation_app_installed():
             from modeltranslation.admin import TranslationAdmin
             bases = (TranslationAdmin,)
-            attrs['Media'] = get_media_class()
+        attrs['Media'] = mcs.get_media_class()
         return super().__new__(mcs, name, bases, attrs)
 
 

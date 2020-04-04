@@ -48,18 +48,3 @@ def reset_meta_tags_cache():
     meta_tags_cache_keys = cache.keys('{}:*'.format(getattr(settings, 'METATAGS_CACHE_KEY_PREFIX', 'metatags')))
     if meta_tags_cache_keys:
         cache.delete_many(meta_tags_cache_keys)
-
-
-def get_media_class():
-    css_files = ['metatags/css/metatags.css']
-    js = None
-    if 'modeltranslation' in settings.INSTALLED_APPS:
-        from modeltranslation import settings as mt_settings
-        css_files.append('modeltranslation/css/tabbed_translation_fields.css')
-        js = (
-            'admin/js/jquery.init.js',
-            'modeltranslation/js/force_jquery.js',
-            mt_settings.JQUERY_UI_URL,
-            'modeltranslation/js/tabbed_translation_fields.js',
-        )
-    return type('Media', (), {'css': {'all': css_files}, 'js': js})
