@@ -49,9 +49,11 @@ class MetaTagAdmin(admin.ModelAdmin, metaclass=MetaTagAdminMeta):
 
 class MetaTagAbleMixin:
 
-    def get_inlines(self, request, ob):
-        inlines = super().get_inlines(request, ob)
-        inlines = inlines + (MetaTagInline,)
+    def get_inline_instances(self, request, obj=None):
+        inlines = super().get_inline_instances(request, obj)
+        if not isinstance(inlines, list):
+            inlines = list(inlines)
+        inlines.insert(0, MetaTagInline(self.model, self.admin_site))
         return inlines
 
 
