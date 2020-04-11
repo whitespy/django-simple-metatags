@@ -10,14 +10,13 @@ django-simple-metatags
 
 |
 
-The django application, that allows attach title, keywords and description meta tags for
-site's pages.
+The django application allows to add title, keywords and description meta tags to site's pages.
 
 Features
 --------
 
-- Attaching meta tags to a model instance
-- Attaching meta tags to an URL-path
+- Attaching meta tags to model instances
+- Attaching meta tags to URL paths
 - Caching
 - Integration with the django-modeltranslation application
 
@@ -26,7 +25,7 @@ Installation
 
 .. code:: bash
 
-    $ pip install django-simple-metatags
+    pip install django-simple-metatags
 
 Configuration
 -------------
@@ -40,66 +39,114 @@ Configuration
         'metatags',
     )
 
-2. Run migrate to create the application table:
+2. Run the migrate management command:
 
 .. code:: bash
 
-    $ python manage.py migrate metatags
+    python manage.py migrate metatags
 
-3. Include meta tags for model, add MetaTagInline in inlines of your ModelAdmin subclass
-(also django-simple-metatags has the own ModelAdmin class, that allows add meta tags for URL-paths):
+3. Customize model admin classes:
+
+To be able to attach meta tags to a model instance you should slightly set up a model admin class.
+
+The first way by adding the **MetaTagInline** class in inlines sequence.
 
 .. code:: python
 
     from metatags.admin import MetaTagInline
 
+
     class CustomModelAdmin(admin.ModelAdmin):
         # ...
         inlines = (MetaTagInline,)
 
+The second way by using **MetaTagAbleMixin**:
 
-4. Load meta_tags template library and create meta_tags template block in HTML head section. Add include_meta_tags
-template tag in meta_tags block:
+.. code:: python
+
+    from metatags.admin import MetaTagAbleMixin
+
+
+    class CustomModelAdmin(MetaTagAbleMixin, admin.ModelAdmin):
+        # ...
+
+The third and way by using **MetaTagAbleModelAdmin**:
+
+.. code:: python
+
+    from metatags.admin import MetaTagAbleModelAdmin
+
+
+    class CustomModelAdmin(MetaTagAbleModelAdmin):
+        # ...
+
+.. warning::
+
+    Meta tags can be attached only to models that has auto-incrementing or positive integer primary key.
+
+.. note::
+
+    Also django-simple-metatags application has an own model admin class that allows to attach meta tags to URL
+    paths.
+
+4. Load the metatags template library and add the include_metatags template tag in template.
+
+Add the include_metatags template tag with the model_instance argument to use meta tags attached to a model instance.
 
 .. code:: html
 
-    {% load meta_tags %}
+    {% load metatags %}
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        {% block meta_tags %}
-            {% include_meta_tags %}
-        {% endblock %}
+        {% include_metatags object default_title='Foo' default_keywords='Foo, bar, baz' %}
     </head>
 
-Arguments of include_meta_tags template tag
--------------------------------------------
+.. note::
+
+    The model_instance attribute is just an instance of arbitrary model like User, FlatPage, etc. with attached via
+    Django's admin meta tags (see section **#3**). A variable than contains a model instance must be included in the
+    template context.
+
+Add the include_metatags without the model_instance argument to use meta tags attached to an URL path.
+
+.. code:: html
+
+    {% load metatags %}
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        {% include_metatags default_title='Foo' default_keywords='Foo, bar, baz' %}
+    </head>
+
+Arguments of include_metatags template tag
+------------------------------------------
 
 All arguments are optional.
 
-**model_instance** - Model instance, to get meta tags. None by default.
+**model_instance** - A model instance with attached meta tags. Defaults to **None**.
 
-**model_title_field** - Model's field, that can be used as title if meta tags title field is blank.
-'title' by default.
+**default_title** - A default title of page. Defaults to **''**.
 
-**default_title** - Title of page by default. Used with URL-path. No sense, when the model_instance argument was passed.
-'' by default.
+**default_keywords** - Default keywords of page. Defaults to **''**.
 
-**default_keywords** - Keywords by default.
+**default_description** - Default description of page. Defaults to **''**.
 
-**default_description** - Description by default.
+Caching
+-------
+
+Since version 2.0.0 application gained caching support. See **settings** section for more details.
 
 Settings
 --------
 
-**METATAGS_CACHE_ENABLED** - Enables meta tags caching to avoid database hitting. Defaults to **False**.
+**METATAGS_CACHE_ENABLED** - Enables meta tags caching to minimize database access. Defaults to **False**.
 
 .. note::
 
     Django's caching system must be configured.
 
-**METATAGS_CACHE_ALIAS** - Name of cache backend used by meta tags caching feature. Defaults to **default**.
+**METATAGS_CACHE_ALIAS** - A name of cache backend used by meta tags caching feature. Defaults to **default**.
 
-**METATAGS_CACHE_TIMEOUT** - Timeout, in seconds, to use for meta tags caching. If value set up to **None**
+**METATAGS_CACHE_TIMEOUT** - Timeout in seconds to use for meta tags caching. If value set up to **None**
 cached meta tags never expire. Defaults to **None**.
 
 .. note::
