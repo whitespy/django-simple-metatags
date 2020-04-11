@@ -47,9 +47,9 @@ Configuration
 
 3. Customize model admin classes:
 
-To be able to attach meta tags to a model instance you should slightly set up a model admin class.
+To be able to attach meta tags to a model instance you should slightly adjust a model admin class.
 
-The first way by adding the **MetaTagInline** class in inlines sequence.
+The first way by adding the **MetaTagInline** class in inlines sequence:
 
 .. code:: python
 
@@ -104,8 +104,7 @@ Add the include_metatags template tag with the model_instance argument to use me
 .. note::
 
     The model_instance attribute is just an instance of arbitrary model like User, FlatPage, etc. with attached via
-    Django's admin meta tags (see section **#3**). A variable than contains a model instance must be included in the
-    template context.
+    Django's admin meta tags. A variable than contains a model instance must be included in the template context.
 
 Add the include_metatags without the model_instance argument to use meta tags attached to an URL path.
 
@@ -133,7 +132,7 @@ All arguments are optional.
 Caching
 -------
 
-Since version 2.0.0 application gained caching support. See **settings** section for more details.
+Since version 2.0.0 application gained caching support. See settings section for more details.
 
 Settings
 --------

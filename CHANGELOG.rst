@@ -2,6 +2,18 @@
 Changelog
 #########
 
+Release 2.0.0
+-------------
+
+- Added caching feature
+- Added database index for url field of MetaTag model
+- Added MetaTagAbleMixin and MetaTagAbleModelAdmin to simplify meta tags adjusting in Django admin
+- Renamed database table from meta_tags to metatags
+- Removed model_title_field argument of include_meta_tags inclusion tag
+- Started deprecation of meta_tags template library in favor of metatags
+- Started deprecation of include_meta_tags inclusion tag in favor of include_metatags
+- Fixed integration with the django-modeltranslation application
+
 Release 1.0.1
 -------------
 
