@@ -19,7 +19,7 @@ class MetaTagManager(models.Manager.from_queryset(MetaTagQueryset)):
         Returns meta tags attached to a model instance.
         """
         return get_object_or_none(
-            klass=self.model,
+            self.attached_to_model_instance(),
             content_type__app_label=model_instance._meta.app_label,
             content_type__model=model_instance._meta.model_name,
             object_id=model_instance.pk,
@@ -29,7 +29,7 @@ class MetaTagManager(models.Manager.from_queryset(MetaTagQueryset)):
         """
         Returns meta tags attached to an URL-path.
         """
-        return get_object_or_none(klass=self.model, url=url_path)
+        return get_object_or_none(self.attached_to_url_path(), url=url_path)
 
     def fetch_from_cache_attached_to_model_instance(self, model_instance):
         """
