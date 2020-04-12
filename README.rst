@@ -8,6 +8,9 @@ django-simple-metatags
 .. image:: https://badge.fury.io/py/django-simple-metatags.svg
     :target: https://badge.fury.io/py/django-simple-metatags
 
+.. image:: https://codecov.io/gh/whitespy/django-simple-metatags/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/whitespy/django-simple-metatags
+
 |
 
 The django application allows to add title, keywords and description meta tags to site's pages.

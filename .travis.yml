@@ -31,8 +31,13 @@ matrix:
 
 install:
   - pip install flake8
+  - pip install coverage
+  - pip install codecov
   - pip install Django==$DJANGO_VERSION
 
 script:
   - flake8 ./metatags
-  - python runtests.py
+  - coverage run runtests.py
+
+after_success:
+  - codecov

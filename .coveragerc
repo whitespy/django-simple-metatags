@@ -1,0 +1,9 @@
+[run]
+source = metatags
+branch = True
+omit = *admin.py
+       *translation.py
+       *tests.py
+       */management/*
+       */migrations/*
+       */templatetags/meta_tags.py
