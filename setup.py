@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-simple-metatags',
-    version='2.0.0',
+    version='2.0.1',
     description="The django application allows to add title, keywords and "
                 "description meta tags to site's pages.",
     author='Andrey Butenko',
