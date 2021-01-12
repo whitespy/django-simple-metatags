@@ -2,6 +2,13 @@
 Changelog
 #########
 
+Release 2.0.1
+-------------
+
+- Fixed incorrect path in MANIFEST.in for CSS assets
+- Dropped Python 3.4, Python 3.5 and Django 2.0 support
+- Declared compatibility with Python 3.9 and Django 3.1
+
 Release 2.0.0
 -------------
 
