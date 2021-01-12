@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 'verbose_name': 'meta tags',
                 'verbose_name_plural': 'meta tags',
                 'db_table': 'meta_tags',
-                'ordering': ('id',),
+                'ordering': ['id'],
                 'unique_together': {('content_type', 'object_id')},
             },
         ),

@@ -21,9 +21,9 @@ class MetaTag(models.Model):
     objects = MetaTagManager()
 
     class Meta:
-        ordering = ('id',)
+        ordering = ['id']
         db_table = 'metatags'
-        unique_together = ('content_type', 'object_id')
+        unique_together = ['content_type', 'object_id']
         verbose_name = _('meta tags')
         verbose_name_plural = _('meta tags')
 
