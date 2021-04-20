@@ -2,7 +2,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
 from .models import MetaTag
-from .utils import get_object_or_none, check_caching_enabled
+from .utils import check_caching_enabled, get_object_or_none
 
 
 @receiver(post_delete, dispatch_uid='delete_attached_meta_tags')

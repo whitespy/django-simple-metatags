@@ -5,7 +5,9 @@ from django.test import SimpleTestCase, TestCase, override_settings
 
 from .models import MetaTag
 from .templatetags.metatags import include_metatags
-from .utils import truncate_language_code_from_path, check_caching_enabled, get_cache_backend
+from .utils import (
+    check_caching_enabled, get_cache_backend, truncate_language_code_from_path,
+)
 
 UserModel = get_user_model()
 HttpRequestDummy = namedtuple('HttpRequestDummy', ['path_info'])

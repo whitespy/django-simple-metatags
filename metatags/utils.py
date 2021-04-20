@@ -1,5 +1,7 @@
 from django.conf import settings
-from django.core.cache import caches, InvalidCacheBackendError, DEFAULT_CACHE_ALIAS
+from django.core.cache import (
+    DEFAULT_CACHE_ALIAS, InvalidCacheBackendError, caches,
+)
 from django.shortcuts import _get_queryset
 from django.utils.translation import get_language_from_path
 

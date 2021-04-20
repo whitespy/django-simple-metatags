@@ -1,6 +1,6 @@
 from django.db import models
 
-from .utils import get_object_or_none, get_cache_backend
+from .utils import get_cache_backend, get_object_or_none
 
 
 class MetaTagQueryset(models.QuerySet):

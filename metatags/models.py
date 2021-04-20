@@ -6,7 +6,7 @@ from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
 
 from .managers import MetaTagManager
-from .utils import get_cache_backend, check_caching_enabled
+from .utils import check_caching_enabled, get_cache_backend
 
 
 class MetaTag(models.Model):

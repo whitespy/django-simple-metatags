@@ -2,7 +2,7 @@ from django.db import models
 from django.template import Library
 
 from ..models import MetaTag
-from ..utils import truncate_language_code_from_path, check_caching_enabled
+from ..utils import check_caching_enabled, truncate_language_code_from_path
 
 register = Library()
 

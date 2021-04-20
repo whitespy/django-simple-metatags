@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 
-
 from ...utils import check_caching_enabled, reset_meta_tags_cache
 
 

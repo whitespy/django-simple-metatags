@@ -29,12 +29,14 @@ matrix:
 
 install:
   - pip install flake8
+  - pip install isort
   - pip install coverage
   - pip install codecov
   - pip install Django==$DJANGO_VERSION
 
 script:
-  - flake8 ./metatags
+  - flake8 metatags
+  - isort metatags --check
   - coverage run runtests.py
 
 after_success:
