@@ -9,6 +9,7 @@ env:
   - DJANGO_VERSION=2.2
   - DJANGO_VERSION=3.0
   - DJANGO_VERSION=3.1
+  - DJANGO_VERSION=3.2
 
 matrix:
   include:
@@ -26,6 +27,11 @@ matrix:
     - { env: DJANGO_VERSION=3.1, python: 3.7 }
     - { env: DJANGO_VERSION=3.1, python: 3.8 }
     - { env: DJANGO_VERSION=3.1, python: 3.9 }
+
+    - { env: DJANGO_VERSION=3.2, python: 3.6 }
+    - { env: DJANGO_VERSION=3.2, python: 3.7 }
+    - { env: DJANGO_VERSION=3.2, python: 3.8 }
+    - { env: DJANGO_VERSION=3.2, python: 3.9 }
 
 install:
   - pip install flake8
