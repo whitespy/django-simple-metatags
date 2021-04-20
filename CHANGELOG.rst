@@ -2,6 +2,12 @@
 Changelog
 #########
 
+Release 2.0.2
+-------------
+
+- Sorted imports by isort
+- Declared compatibility with Django 3.2
+
 Release 2.0.1
 -------------
 
