@@ -9,6 +9,6 @@ class Command(BaseCommand):
     def handle(self, **options):
         if check_caching_enabled():
             reset_meta_tags_cache()
-            self.stdout.write(self.style.SUCCESS('Meta tags has been successfully reset.'))
+            self.stdout.write(self.style.SUCCESS('Meta tags cache has been successfully reset.'))
         else:
-            self.stderr.write('Meta tags caching was not enabled.')
+            self.stderr.write('Meta tags caching is disabled.')
