@@ -33,7 +33,7 @@ class MetaTag(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        is_inserted = not bool(self.pk)
+        is_inserted = self._state.adding
         super().save(*args, **kwargs)
         if not is_inserted and check_caching_enabled():
             self._invalidate_cache()

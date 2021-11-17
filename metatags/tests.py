@@ -119,3 +119,11 @@ class TestModels(TestCase):
         self.assertIsNotNone(cache.get(self.meta_tags._get_cache_key()))
         self.meta_tags.delete()
         self.assertIsNone(cache.get(self.meta_tags._get_cache_key()))
+
+    @override_settings(METATAGS_CACHE_ENABLED=True)
+    def test_cached_meta_tags_save(self):
+        self.meta_tags._rebuild_cache()
+        cache = get_cache_backend()
+        self.meta_tags.title = 'updated test user title'
+        self.meta_tags.save()
+        self.assertIsNone(cache.get(self.meta_tags._get_cache_key()))
