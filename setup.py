@@ -9,7 +9,7 @@ setup(
     author='Andrey Butenko',
     author_email='whitespysoftware@gmail.com',
     url='https://github.com/whitespy/django-simple-metatags',
-    long_description=open('README.rst').read(),
+    long_description=open('README.rst', encoding='utf-8').read(),
     packages=find_packages(),
     include_package_data=True,
     platforms='any',
