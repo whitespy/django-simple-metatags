@@ -2,6 +2,12 @@
 Changelog
 #########
 
+Release 2.0.3
+-------------
+
+- Declared compatibility with Python 3.10 in Django 3.2
+- Improved messages emitted by the resetmetatagscache management command
+
 Release 2.0.2
 -------------
 
